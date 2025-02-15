@@ -43,7 +43,7 @@ userInputService.InputBegan:Connect(function(input, gameProcessed)
         -- Запускаем цикл создания пластин
         while isSpaceHeld do
             createPlate()
-            wait(0.3) -- Ждем 1 секунду перед созданием следующей пластины
+            wait(0.23) -- Ждем 1 секунду перед созданием следующей пластины
         end
     end
 end)
