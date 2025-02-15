@@ -49,12 +49,13 @@ userInputService.InputBegan:Connect(function(input, gameProcessed)
 end)
 
 -- Обработка отпускания клавиши Space
-.InputEnded:Connect(function(input)
-    if input.userInputServiceKeyCode == Enum.KeyCode.Space then -- Проверяем, что отпущена клавиша Space
+userInputService.InputEnded:Connect(function(input)
+    if input.KeyCode == Enum.KeyCode.Space then -- Проверяем, что отпущена клавиша Space
         isSpaceHeld = false -- Останавливаем цикл
     end
 end)
---Send Notification
+
+--🎩Send Notification🎩
 local Players = game:GetService("Players")
 local StarterGui = game:GetService("StarterGui")
 
