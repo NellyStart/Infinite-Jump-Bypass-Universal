@@ -1,0 +1,74 @@
+local player = game.Players.LocalPlayer
+local character = player.Character or player.CharacterAdded:Wait()
+local humanoid = character:WaitForChild("Humanoid")
+local userInputService = game:GetService("UserInputService")
+
+-- Функция для создания пластины
+local function createPlate()
+    -- Создаем новую часть (пластину)
+    local plate = Instance.new("Part")
+    plate.Name = "JumpPlate"
+    plate.Size = Vector3.new(1, 0.1, 1) -- Размер пластины (ширина, высота, глубина)
+    plate.Anchored = true -- Фиксируем пластину, чтобы она не падала
+    plate.CanCollide = true -- Разрешаем коллизии
+    plate.Transparency = 1 -- Полупрозрачность для визуального эффекта
+    plate.BrickColor = BrickColor.new("Bright blue") -- Цвет пластины
+
+    -- Позиционируем пластину под ногами персонажа
+    local rootPart = character:FindFirstChild("HumanoidRootPart")
+    if rootPart then
+        plate.Position = rootPart.Position - Vector3.new(0, 3, 0) -- Позиция под ногами
+    end
+
+    -- Добавляем пластину в игровой мир
+    plate.Parent = workspace
+
+    -- Удаляем пластину через 1 секунду
+    task.delay(0.1, function()
+        plate:Destroy()
+    end)
+
+    -- Заставляем персонажа прыгнуть с текущим значением JumpPower
+    humanoid:ChangeState(Enum.HumanoidStateType.Jumping)
+end
+
+-- Переменная для отслеживания состояния зажатия клавиши
+local isSpaceHeld = false
+
+-- Обработка нажатия клавиши Space
+userInputService.InputBegan:Connect(function(input, gameProcessed)
+    if gameProcessed then return end -- Игнорируем, если событие уже обработано игрой
+    if input.KeyCode == Enum.KeyCode.Space then -- Проверяем, что нажата клавиша Space
+        isSpaceHeld = true
+        -- Запускаем цикл создания пластин
+        while isSpaceHeld do
+            createPlate()
+            wait(0.3) -- Ждем 1 секунду перед созданием следующей пластины
+        end
+    end
+end)
+
+-- Обработка отпускания клавиши Space
+.InputEnded:Connect(function(input)
+    if input.userInputServiceKeyCode == Enum.KeyCode.Space then -- Проверяем, что отпущена клавиша Space
+        isSpaceHeld = false -- Останавливаем цикл
+    end
+end)
+--Send Notification
+local Players = game:GetService("Players")
+local StarterGui = game:GetService("StarterGui")
+
+-- Создаем функцию для отображения оповещения
+local function sendNotification()
+    local message = "github.com/NellyStart"
+    
+    -- Отправляем уведомление всем игрокам
+    StarterGui:SetCore("SendNotification", {
+        Title = "Inf Jump Bypass",
+        Text = message,
+        Duration = 6 -- Продолжительность уведомления в секундах
+    })
+end
+
+-- Вызываем функцию
+sendNotification()
